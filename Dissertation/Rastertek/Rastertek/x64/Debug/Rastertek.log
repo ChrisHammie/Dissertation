@@ -1,0 +1,5 @@
+﻿  D3DClass.cpp
+c:\users\chris\desktop\rastertek\rastertek\d3dclass.cpp(41): warning C4101: 'error': unreferenced local variable
+c:\users\chris\desktop\rastertek\rastertek\d3dclass.cpp(38): warning C4101: 'stringLength': unreferenced local variable
+MSVCRTD.lib(exe_main.obj) : error LNK2019: unresolved external symbol main referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
+C:\Users\chris\Desktop\Rastertek\x64\Debug\Rastertek.exe : fatal error LNK1120: 1 unresolved externals
