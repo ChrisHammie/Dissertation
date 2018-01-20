@@ -46,6 +46,8 @@ public:
 	
 	ID3D11ShaderResourceView* GetTexture();
 
+	
+
 	//float length = 0.0f;
 
 	XMFLOAT3 midpoint;

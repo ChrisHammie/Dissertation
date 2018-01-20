@@ -71,7 +71,13 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 		return false;
 	}
 
-	result = LoadTexture(device, deviceContext, textureFileName);
+	result = LoadTexture(device, deviceContext, "water.tga");
+	if (!result)
+	{
+		return false;
+	}
+
+	result = LoadTexture(device, deviceContext, "stone01.tga");
 	if (!result)
 	{
 		return false;
@@ -230,6 +236,8 @@ void ModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+	
+
 	return;
 }
 
@@ -268,7 +276,7 @@ bool ModelClass::LoadModel(char* filename)
 	ifstream fin;
 	char input;
 	//int i;
-
+	int temp = 0;
 
 	// Open the model file.
 	fin.open(filename);
@@ -288,6 +296,7 @@ bool ModelClass::LoadModel(char* filename)
 
 	// Read in the vertex count.
 	fin >> m_vertexCount;
+	
 
 	// Set the number of indices to be the same as the vertex count.
 	//m_indexCount = m_vertexCount;
@@ -317,7 +326,7 @@ bool ModelClass::LoadModel(char* filename)
 
 	
 	// Read in the vertex data.
-	for (int i = 0; i<m_vertexCount; i++)
+	for (int i = 0; i< m_vertexCount; i++)
 	{
 		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;
 		fin >> m_model[i].tu >> m_model[i].tv;
@@ -330,7 +339,7 @@ bool ModelClass::LoadModel(char* filename)
 	
 	if (filename == "square.txt")
 	{
-		m_indexCount = 6;
+		m_indexCount = m_vertexCount;
 		for (int i = 0; i<m_vertexCount; i++)
 		{
 			vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
@@ -365,9 +374,9 @@ bool ModelClass::LoadModel(char* filename)
 	}
 	else if (filename == "flat.txt")
 	{
-		m_indexCount = 36;
+		m_indexCount = prevVerticeCount + m_vertexCount;
 		//m_vertexCount += prevVerticeCount;
-		for (int i = prevVerticeCount, j = 0; i<(m_vertexCount+prevVerticeCount); i++, j++)
+		for (int i = prevVerticeCount, j = 0; i<(m_vertexCount + prevVerticeCount); i++, j++)
 		{
 			vertices[i].position = XMFLOAT3(m_model[j].x, m_model[j].y, m_model[j].z);
 			vertices[i].texture = XMFLOAT2(m_model[j].tu, m_model[j].tv);

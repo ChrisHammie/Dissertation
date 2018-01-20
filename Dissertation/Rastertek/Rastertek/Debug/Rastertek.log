@@ -1,19 +1,2 @@
-﻿  stdafx.cpp
-  SystemClass.cpp
-e:\downloads\dissertation\rastertek\rastertek\systemclass.cpp(53): warning C4316: 'GraphicsClass': object allocated on the heap may not be aligned 16
-  Rastertek.cpp
-  ModelClass.cpp
-  InputClass.cpp
-e:\downloads\dissertation\rastertek\rastertek\inputclass.cpp(98): warning C4316: 'CameraClass': object allocated on the heap may not be aligned 16
-  GraphicsClass.cpp
-e:\downloads\dissertation\rastertek\rastertek\graphicsclass.cpp(39): warning C4316: 'D3DClass': object allocated on the heap may not be aligned 16
-e:\downloads\dissertation\rastertek\rastertek\graphicsclass.cpp(95): warning C4316: 'CameraClass': object allocated on the heap may not be aligned 16
-  D3DClass.cpp
-  TextureShaderClass.cpp
-  TextureClass.cpp
-  LightShaderClass.cpp
-  LightClass.cpp
-  CameraClass.cpp
-e:\downloads\dissertation\rastertek\rastertek\cameraclass.cpp(135): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
-  Rastertek.vcxproj -> E:\Downloads\Dissertation\Rastertek\Debug\Rastertek.exe
+﻿  ModelClass.cpp
+  Rastertek.vcxproj -> E:\Dissertation\Dissertation\Dissertation\Rastertek\Debug\Rastertek.exe
