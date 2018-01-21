@@ -20,6 +20,8 @@ ModelClass::ModelClass()
 
 	prevIndiceCount = 0;
 	prevVerticeCount = 0;
+
+	count = 0;
 }
 
 
@@ -53,13 +55,13 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 	midpoints.reserve(10);
 
 	// Load in the model data,
-	result = LoadModel("square.txt");
+	result = LoadModel("flat.txt");
 	if (!result)
 	{
 		return false;
 	}
 
-	result = LoadModel("flat.txt");
+	result = LoadModel("square.txt");
 	if (!result)
 	{
 		return false;
@@ -135,7 +137,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 
 	//std::vector<XMFLOAT3> midpoints(m_vertexCount / 6);
 
-	
+	result;
 
 	//midpoints.size = m_vertexCount / 6;
 
@@ -337,7 +339,7 @@ bool ModelClass::LoadModel(char* filename)
 	fin.close();
 
 	
-	if (filename == "square.txt")
+	/*if (filename == "square.txt")
 	{
 		m_indexCount = m_vertexCount;
 		for (int i = 0; i<m_vertexCount; i++)
@@ -369,18 +371,31 @@ bool ModelClass::LoadModel(char* filename)
 
 			indices[i] = i;
 		}
-		prevVerticeCount = m_vertexCount;
-		prevIndiceCount = m_indexCount;
-	}
-	else if (filename == "flat.txt")
+		
+	}*/
+
+	
+	
+	m_indexCount = prevVerticeCount + m_vertexCount;
+	//m_vertexCount += prevVerticeCount;
+	for (int i = prevVerticeCount, j = 0; i<(m_vertexCount + prevVerticeCount); i++, j++)
 	{
-		m_indexCount = prevVerticeCount + m_vertexCount;
-		//m_vertexCount += prevVerticeCount;
-		for (int i = prevVerticeCount, j = 0; i<(m_vertexCount + prevVerticeCount); i++, j++)
-		{
-			vertices[i].position = XMFLOAT3(m_model[j].x, m_model[j].y, m_model[j].z);
-			vertices[i].texture = XMFLOAT2(m_model[j].tu, m_model[j].tv);
-			vertices[i].normal = XMFLOAT3(m_model[j].nx, m_model[j].ny, m_model[j].nz);
+			if (filename == "flat.txt")
+			{
+				vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
+				vertices[i].texture = XMFLOAT2(m_model[i].tu, m_model[i].tv);
+				vertices[i].normal = XMFLOAT3(m_model[i].nx, m_model[i].ny, m_model[i].nz);
+
+				
+			}
+			else if (filename == "square.txt")
+			{
+				vertices[i].position = XMFLOAT3(m_model[j].x, m_model[j].y, m_model[j].z);
+				vertices[i].texture = XMFLOAT2(m_model[j].tu, m_model[j].tv);
+				vertices[i].normal = XMFLOAT3(m_model[j].nx, m_model[j].ny, m_model[j].nz);
+			}
+
+			indices[i] = i;
 
 			if (iCounter == 1)
 			{
@@ -402,16 +417,18 @@ bool ModelClass::LoadModel(char* filename)
 			{
 				iCounter = 0;
 			}
-			vertices[i].position;
 			
-		}
-		for (int i = prevIndiceCount; i < m_indexCount; i++)
-		{
-			indices[i] = i;
-		}
+			
+			
 	}
-	
-	
+
+	if (count == 0)
+	{
+		prevVerticeCount = m_vertexCount;
+		prevIndiceCount = m_indexCount;
+		count++;
+	}
+
 	ReleaseModel();
 	return true;
 }

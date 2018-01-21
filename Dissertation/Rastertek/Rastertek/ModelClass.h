@@ -83,6 +83,8 @@ private:
 
 	std::vector<XMFLOAT3> midpoints;
 
+	int count;
+
 };
 
 #endif
