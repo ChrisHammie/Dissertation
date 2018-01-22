@@ -38,6 +38,7 @@ ModelClass::~ModelClass()
 bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* textureFileName, char* modelFilename)
 {
 	bool result;
+	
 
 	vertices = new VertexType[36];
 	if (!vertices)
@@ -48,6 +49,12 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 	// Create the index array.
 	indices = new unsigned long[36];
 	if (!indices)
+	{
+		return false;
+	}
+
+	m_texture = new TextureClass;
+	if (!m_texture)
 	{
 		return false;
 	}
@@ -73,7 +80,7 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 		return false;
 	}
 
-	result = LoadTexture(device, deviceContext, "water.tga");
+	result = LoadTexture(device, deviceContext, "stone01.tga");
 	if (!result)
 	{
 		return false;
@@ -115,7 +122,7 @@ int ModelClass::GetIndexCount()
 	return m_indexCount;
 }
 
-ID3D11ShaderResourceView* ModelClass::GetTexture()
+std::vector<ID3D11ShaderResourceView*> ModelClass::GetTexture()
 {
 	return m_texture->GetTexture();
 }
@@ -137,7 +144,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 
 	//std::vector<XMFLOAT3> midpoints(m_vertexCount / 6);
 
-	result;
+	
 
 	//midpoints.size = m_vertexCount / 6;
 
@@ -247,11 +254,7 @@ bool ModelClass::LoadTexture(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 {
 	bool result;
 
-	m_texture = new TextureClass;
-	if (!m_texture)
-	{
-		return false;
-	}
+	
 
 	result = m_texture->Initalize(device, deviceContext, fileName);
 	if (!result)
@@ -338,7 +341,10 @@ bool ModelClass::LoadModel(char* filename)
 	// Close the model file.
 	fin.close();
 
-	
+	fin.open(filename);
+
+	fin.close();
+
 	/*if (filename == "square.txt")
 	{
 		m_indexCount = m_vertexCount;
@@ -429,7 +435,7 @@ bool ModelClass::LoadModel(char* filename)
 		count++;
 	}
 
-	ReleaseModel();
+	//ReleaseModel();
 	return true;
 }
 

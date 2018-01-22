@@ -29,6 +29,8 @@ bool TextureClass::Initalize(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 	unsigned int rowPitch;
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
 
+	textures.reserve(5);
+
 	result = LoadTarga(filename, height, width);
 	if (!result)
 	{
@@ -69,7 +71,11 @@ bool TextureClass::Initalize(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 		return false;
 	}
 
+	textures.push_back(m_textureView);
+
 	deviceContext->GenerateMips(m_textureView);
+
+	
 
 	delete[] m_targaData;
 
@@ -101,9 +107,9 @@ void TextureClass::Shutdown()
 	return;
 }
 
-ID3D11ShaderResourceView* TextureClass::GetTexture()
+std::vector<ID3D11ShaderResourceView*> TextureClass::GetTexture()
 {
-	return m_textureView;
+	return textures;
 }
 
 bool TextureClass::LoadTarga(char* filename, int& height, int& width)

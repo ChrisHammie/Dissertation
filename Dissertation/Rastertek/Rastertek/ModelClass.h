@@ -44,7 +44,7 @@ public:
 
 	int GetIndexCount();
 	
-	ID3D11ShaderResourceView* GetTexture();
+	std::vector<ID3D11ShaderResourceView*> GetTexture();
 
 	
 

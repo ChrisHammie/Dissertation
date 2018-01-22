@@ -4,6 +4,8 @@
 #include <d3d11.h>
 #include <stdio.h>
 
+#include <vector>
+
 class TextureClass
 {
 
@@ -25,7 +27,7 @@ public:
 	bool Initalize(ID3D11Device*, ID3D11DeviceContext*, char*);
 	void Shutdown();
 
-	ID3D11ShaderResourceView* GetTexture();
+	std::vector<ID3D11ShaderResourceView*> GetTexture();
 
 private:
 	bool LoadTarga(char*, int&, int&);
@@ -34,6 +36,8 @@ private:
 	unsigned char* m_targaData;
 	ID3D11Texture2D* m_texture;					//The actual texture
 	ID3D11ShaderResourceView* m_textureView;	//Texture view resource
+
+	std::vector<ID3D11ShaderResourceView*> textures;
 };
 
 #endif

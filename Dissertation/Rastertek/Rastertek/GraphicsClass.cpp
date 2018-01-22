@@ -54,7 +54,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	TwWindowSize(screenWidth, screenHeight);
 
 	TwBar* tweakBar;
-	tweakBar = TwNewBar("Plant Properties");
+	tweakBar = TwNewBar("Dissertation");
 	
 	
 
@@ -78,12 +78,13 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
-	/*result = m_Model2->Initialize(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), "water.tga", "flat.txt");
+	/*result = m_Model1->Initialize(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), "water.tga", "flat.txt");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the model object.", L"Error", MB_OK);
 		return false;
 	}*/
+
 	// Initialize the model object.
 	/*result = m_Model->Initialize(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), "stone01.tga");
 	if (!result)
@@ -109,19 +110,19 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	TwAddVarRW(tweakBar, "Rotation", TW_TYPE_BOOLCPP, &rot, "");
 	
 	// Create the color shader object.
-	m_TextureShader = new TextureShaderClass;
-	if (!m_TextureShader)
-	{
-		return false;
-	}
+	//m_TextureShader = new TextureShaderClass;
+	//if (!m_TextureShader)
+	//{
+	//	return false;
+	//}
 
-	// Initialize the color shader object.
-	result = m_TextureShader->Initialize(m_Direct3D->GetDevice(), hwnd);
-	if (!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the color shader object.", L"Error", MB_OK);
-		return false;
-	}
+	//// Initialize the color shader object.
+	//result = m_TextureShader->Initialize(m_Direct3D->GetDevice(), hwnd);
+	//if (!result)
+	//{
+	//	MessageBox(hwnd, L"Could not initialize the color shader object.", L"Error", MB_OK);
+	//	return false;
+	//}
 
 	// Create the light shader object.
 	m_LightShader1 = new LightShaderClass;
