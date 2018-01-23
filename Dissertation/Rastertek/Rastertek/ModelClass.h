@@ -70,6 +70,8 @@ private:
 	int prevVerticeCount;
 	int prevIndiceCount;
 
+	int prevModel;
+
 	TextureClass* m_texture;
 
 	ModelType* m_model;
@@ -87,6 +89,8 @@ private:
 	XMFLOAT3 one;
 	XMFLOAT3 two;
 	int iCounter = 0;
+
+	XMFLOAT3 diff;
 };
 
 #endif

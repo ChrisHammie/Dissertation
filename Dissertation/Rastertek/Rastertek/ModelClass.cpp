@@ -20,6 +20,7 @@ ModelClass::ModelClass()
 
 	prevIndiceCount = 0;
 	prevVerticeCount = 0;
+	prevModel = 0;
 
 	count = 0;
 
@@ -290,7 +291,11 @@ void ModelClass::ReleaseTexture()
 bool ModelClass::LoadModel(char* filename)
 {
 	ifstream fin;
+	ifstream grass;
+	ifstream dead;
+	ifstream watertxt;
 	char input;
+	char uvCoord;
 	//int i;
 	int temp = 0;
 
@@ -345,10 +350,9 @@ bool ModelClass::LoadModel(char* filename)
 	for (int i = 0; i< m_vertexCount; i++)
 	{
 		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;
-		fin >> m_model[i].tu >> m_model[i].tv;
+		
 		fin >> m_model[i].nx >> m_model[i].ny >> m_model[i].nz;
 
-		
 		if (iCounter == 1)
 		{
 			one.x = m_model[i].x;
@@ -367,25 +371,108 @@ bool ModelClass::LoadModel(char* filename)
 			midpoint.z = (one.z + two.z) / 2;
 			if (filename == "square.txt")
 			{
-				water = midpoint; 
-				midpoints.push_back(midpoint);
+				water = midpoint;
 			}
 			else
 			{
 				midpoints.push_back(midpoint);
 			}
-			
 		}
 		iCounter++;
 		if (iCounter == 6)
 		{
+
+			
+			diff.x = std::abs(midpoint.x - water.x);
+			diff.y = std::abs(midpoint.y - water.y);
+			diff.z = std::abs(midpoint.z - water.z);
+
+
+			if (filename != "square.txt")
+			{
+				if (sqrt(pow(diff.x, 2) + pow(diff.z, 2)) <= 2)
+				{
+					grass.open("grassUV.txt");
+
+					if (grass.fail())
+					{
+						return false;
+					}
+					for (int j = prevModel; j < (prevModel + 6); j++)
+					{
+						grass >> m_model[j].tu >> m_model[j].tv;
+					}
+					grass.close();
+				}
+				else if (sqrt(pow(diff.x, 2) + pow(diff.z, 2)) > 2)
+				{
+					dead.open("deadUV.txt");
+
+					if (dead.fail())
+					{
+						return false;
+					}
+					for (int j = prevModel; j < (prevModel + 6); j++)
+					{
+						dead >> m_model[j].tu >> m_model[j].tv;
+					}
+					dead.close();
+				}
+			}
+			else
+			{
+				watertxt.open("waterUV.txt");
+
+				if (watertxt.fail())
+				{
+					return false;
+				}
+				for (int j = prevModel; j < (prevModel + 6); j++)
+				{
+					watertxt >> m_model[j].tu >> m_model[j].tv;
+				}
+				watertxt.close();
+				
+			}
 			iCounter = 0;
+
+			prevModel += 6;
 		}
 	}
+	prevModel = 0;
+	/*for (int i = 0; i < midpoints.size(); i++)
+	{
+		
+		diff.x = std::abs(midpoints[i].x - water.x);
+		diff.y = std::abs(midpoints[i].y - water.y);
+		diff.z = std::abs(midpoints[i].z - water.z);
+		if (diff.x == 2 || diff.y == 2 || diff.z == 2)
+		{
+			
+			
+		}
+		if (diff.x > 2 || diff.y > 2 || diff.z > 2)
+		{
+			uv.open("deadUV.txt");
+			if (uv.fail())
+			{
+				return false;
+			}
+
+			for (int j = 0; j < m_vertexCount; j++)
+			{
+				uv >> m_model[j].tu >> m_model[j].tv;
+			}
+		}
+		
+	}*/
+
 
 	// Close the model file.
 	fin.close();
-
+	
+	
+	
 	
 
 	/*if (filename == "square.txt")
