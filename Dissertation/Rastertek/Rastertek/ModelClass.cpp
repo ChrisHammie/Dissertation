@@ -47,21 +47,20 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 {
 	bool result;
 	
-	if (modelFilename == "square.txt")
+	
+	vertices = new VertexType[36];
+	if (!vertices)
 	{
-		vertices = new VertexType[36];
-		if (!vertices)
-		{
-			return false;
-		}
-
-		// Create the index array.
-		indices = new unsigned long[36];
-		if (!indices)
-		{
-			return false;
-		}
+		return false;
 	}
+
+	// Create the index array.
+	indices = new unsigned long[36];
+	if (!indices)
+	{
+		return false;
+	}
+	
 	
 
 	
@@ -69,26 +68,25 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 	midpoints.reserve(10);
 
 	// Load in the model data,
-	result = LoadModel(modelFilename);
+	result = LoadModel("square.txt");
 	if (!result)
 	{
 		return false;
 	}
 
-	/*result = LoadModel(modelFilename);
+	result = LoadModel("flat.txt");
 	if (!result)
 	{
 		return false;
-	}*/
-	// Initialize the vertex and index buffers.
-	if (modelFilename == "flat.txt")
-	{
-		result = InitializeBuffers(device);
-		if (!result)
-		{
-			return false;
-		}
 	}
+
+	
+	result = InitializeBuffers(device);
+	if (!result)
+	{
+		return false;
+	}
+	
 		
 	
 	
@@ -342,21 +340,53 @@ bool ModelClass::LoadModel(char* filename)
 	fin.get(input);
 	fin.get(input);
 
-	
+
 	// Read in the vertex data.
 	for (int i = 0; i< m_vertexCount; i++)
 	{
 		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;
 		fin >> m_model[i].tu >> m_model[i].tv;
 		fin >> m_model[i].nx >> m_model[i].ny >> m_model[i].nz;
+
+		
+		if (iCounter == 1)
+		{
+			one.x = m_model[i].x;
+			one.y = m_model[i].y;
+			one.z = m_model[i].z;
+
+		}
+		else if (iCounter == 2)
+		{
+			two.x = m_model[i].x;
+			two.y = m_model[i].y;
+			two.z = m_model[i].z;
+
+			midpoint.x = (one.x + two.x) / 2;
+			midpoint.y = (one.y + two.y) / 2;
+			midpoint.z = (one.z + two.z) / 2;
+			if (filename == "square.txt")
+			{
+				water = midpoint; 
+				midpoints.push_back(midpoint);
+			}
+			else
+			{
+				midpoints.push_back(midpoint);
+			}
+			
+		}
+		iCounter++;
+		if (iCounter == 6)
+		{
+			iCounter = 0;
+		}
 	}
 
 	// Close the model file.
 	fin.close();
 
-	fin.open(filename);
-
-	fin.close();
+	
 
 	/*if (filename == "square.txt")
 	{
@@ -417,29 +447,6 @@ bool ModelClass::LoadModel(char* filename)
 
 			indices[i] = i;
 
-			if (iCounter == 1)
-			{
-				one = vertices[i].position;
-
-			}
-			else if (iCounter == 2)
-			{
-				two = vertices[i].position;
-
-				midpoint.x = (one.x + two.x) / 2;
-				midpoint.y = (one.y + two.y) / 2;
-				midpoint.z = (one.z + two.z) / 2;
-
-				midpoints.push_back(midpoint);
-			}
-			iCounter++;
-			if (iCounter == 6)
-			{
-				iCounter = 0;
-			}
-			
-			
-			
 	}
 
 	if (count == 0)

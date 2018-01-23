@@ -50,10 +50,7 @@ public:
 
 	//float length = 0.0f;
 
-	XMFLOAT3 midpoint;
-	XMFLOAT3 one;
-	XMFLOAT3 two;
-	int iCounter = 0;
+	
 
 private:
 	bool InitializeBuffers(ID3D11Device*);
@@ -85,6 +82,11 @@ private:
 
 	int count;
 
+	XMFLOAT3 water;
+	XMFLOAT3 midpoint;
+	XMFLOAT3 one;
+	XMFLOAT3 two;
+	int iCounter = 0;
 };
 
 #endif

@@ -115,6 +115,9 @@
     <Image Include="water.tga">
       <Filter>Source Files</Filter>
     </Image>
+    <Image Include="texturefile.tga">
+      <Filter>Source Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Cube.txt">
@@ -124,6 +127,15 @@
       <Filter>Source Files</Filter>
     </Text>
     <Text Include="square.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="deadUV.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="grassUV.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="waterUV.txt">
       <Filter>Source Files</Filter>
     </Text>
   </ItemGroup>
