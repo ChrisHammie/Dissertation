@@ -19,6 +19,7 @@ struct PixelInputType
 float4 LightPixelShader(PixelInputType input) : SV_TARGET
 {
 	float4 textureColor;
+	
 	float3 lightDir;
 	float lightIntensity;
 	float4 color;
@@ -26,6 +27,8 @@ float4 LightPixelShader(PixelInputType input) : SV_TARGET
 	
 	// Sample the pixel color from the texture using the sampler at this texture coordinate location.
 	textureColor = shaderTexture.Sample(SampleType, input.tex);
+	
+
 	
 	// Invert the light direction for calculations.
 	lightDir = -lightDirection;

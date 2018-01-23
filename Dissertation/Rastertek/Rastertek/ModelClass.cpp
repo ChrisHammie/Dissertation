@@ -22,6 +22,14 @@ ModelClass::ModelClass()
 	prevVerticeCount = 0;
 
 	count = 0;
+
+	m_texture = new TextureClass;
+	if (!m_texture)
+	{
+		return;
+	}
+
+	
 }
 
 
@@ -39,58 +47,63 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 {
 	bool result;
 	
-
-	vertices = new VertexType[36];
-	if (!vertices)
+	if (modelFilename == "square.txt")
 	{
-		return false;
-	}
+		vertices = new VertexType[36];
+		if (!vertices)
+		{
+			return false;
+		}
 
-	// Create the index array.
-	indices = new unsigned long[36];
-	if (!indices)
-	{
-		return false;
+		// Create the index array.
+		indices = new unsigned long[36];
+		if (!indices)
+		{
+			return false;
+		}
 	}
+	
 
-	m_texture = new TextureClass;
-	if (!m_texture)
-	{
-		return false;
-	}
+	
 
 	midpoints.reserve(10);
 
 	// Load in the model data,
-	result = LoadModel("flat.txt");
+	result = LoadModel(modelFilename);
 	if (!result)
 	{
 		return false;
 	}
 
-	result = LoadModel("square.txt");
+	/*result = LoadModel(modelFilename);
 	if (!result)
 	{
 		return false;
-	}
+	}*/
 	// Initialize the vertex and index buffers.
-	result = InitializeBuffers(device);
+	if (modelFilename == "flat.txt")
+	{
+		result = InitializeBuffers(device);
+		if (!result)
+		{
+			return false;
+		}
+	}
+		
+	
+	
+
+	result = LoadTexture(device, deviceContext, textureFileName);
 	if (!result)
 	{
 		return false;
 	}
 
-	result = LoadTexture(device, deviceContext, "stone01.tga");
+	/*result = LoadTexture(device, deviceContext, textureFileName);
 	if (!result)
 	{
 		return false;
-	}
-
-	result = LoadTexture(device, deviceContext, "stone01.tga");
-	if (!result)
-	{
-		return false;
-	}
+	}*/
 	
 
 	return true;
@@ -386,7 +399,7 @@ bool ModelClass::LoadModel(char* filename)
 	//m_vertexCount += prevVerticeCount;
 	for (int i = prevVerticeCount, j = 0; i<(m_vertexCount + prevVerticeCount); i++, j++)
 	{
-			if (filename == "flat.txt")
+			if (filename == "square.txt")
 			{
 				vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
 				vertices[i].texture = XMFLOAT2(m_model[i].tu, m_model[i].tv);
@@ -394,11 +407,12 @@ bool ModelClass::LoadModel(char* filename)
 
 				
 			}
-			else if (filename == "square.txt")
+			else if (filename == "flat.txt")
 			{
 				vertices[i].position = XMFLOAT3(m_model[j].x, m_model[j].y, m_model[j].z);
 				vertices[i].texture = XMFLOAT2(m_model[j].tu, m_model[j].tv);
 				vertices[i].normal = XMFLOAT3(m_model[j].nx, m_model[j].ny, m_model[j].nz);
+				
 			}
 
 			indices[i] = i;

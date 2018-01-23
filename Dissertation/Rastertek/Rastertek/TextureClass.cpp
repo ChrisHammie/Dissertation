@@ -65,6 +65,7 @@ bool TextureClass::Initalize(ID3D11Device* device, ID3D11DeviceContext* deviceCo
 	srvDesc.Texture2D.MostDetailedMip = 0;
 	srvDesc.Texture2D.MipLevels = -1;
 
+
 	hResult = device->CreateShaderResourceView(m_texture, &srvDesc, &m_textureView);
 	if (FAILED(hResult))
 	{
