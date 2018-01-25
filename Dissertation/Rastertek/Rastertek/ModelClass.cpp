@@ -12,7 +12,8 @@ ModelClass::ModelClass()
 	m_model = 0;
 
 	m_Square = 0;
-	vertices = 0;
+	//vertices = 0;
+
 	indices = 0;
 
 	m_vertexCount = 0;
@@ -49,21 +50,8 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 	bool result;
 	
 	
-	vertices = new VertexType[36];
-	if (!vertices)
-	{
-		return false;
-	}
-
-	// Create the index array.
-	indices = new unsigned long[36];
-	if (!indices)
-	{
-		return false;
-	}
 	
-	
-
+	SetVerticeAndIndiceArray();
 	
 
 	midpoints.reserve(10);
@@ -137,6 +125,72 @@ int ModelClass::GetIndexCount()
 std::vector<ID3D11ShaderResourceView*> ModelClass::GetTexture()
 {
 	return m_texture->GetTexture();
+}
+
+void ModelClass::SetVerticeAndIndiceArray()
+{
+	ifstream open;
+	char input;
+
+	open.open("square.txt");
+
+	// If it could not open the file then exit.
+	if (open.fail())
+	{
+		return;
+	}
+
+	// Read up to the value of vertex count.
+	open.get(input);
+	while (input != ':')
+	{
+		open.get(input);
+	}
+
+	// Read in the vertex count.
+	open >> m_vertexCount;
+
+	open.close();
+	prevVerticeCount = m_vertexCount;
+
+	open.open("flat.txt");
+
+	// If it could not open the file then exit.
+	if (open.fail())
+	{
+		return;
+	}
+
+	// Read up to the value of vertex count.
+	open.get(input);
+	while (input != ':')
+	{
+		open.get(input);
+	}
+
+	// Read in the vertex count.
+	open >> m_vertexCount;
+
+	open.close();
+
+	m_vertexCount += prevVerticeCount;
+	m_indexCount = m_vertexCount;
+
+	// Create the index array.
+
+
+	vertices = new VertexType[m_vertexCount];
+	if (!vertices)
+	{
+		return;
+	}
+
+
+	indices = new unsigned long[m_indexCount];
+	if (!indices)
+	{
+		return;
+	}
 }
 
 
@@ -350,7 +404,6 @@ bool ModelClass::LoadModel(char* filename)
 	for (int i = 0; i< m_vertexCount; i++)
 	{
 		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;
-		
 		fin >> m_model[i].nx >> m_model[i].ny >> m_model[i].nz;
 
 		if (iCounter == 1)
@@ -372,6 +425,7 @@ bool ModelClass::LoadModel(char* filename)
 			if (filename == "square.txt")
 			{
 				water = midpoint;
+				prevVerticeCount = 0;
 			}
 			else
 			{
@@ -381,8 +435,6 @@ bool ModelClass::LoadModel(char* filename)
 		iCounter++;
 		if (iCounter == 6)
 		{
-
-			
 			diff.x = std::abs(midpoint.x - water.x);
 			diff.y = std::abs(midpoint.y - water.y);
 			diff.z = std::abs(midpoint.z - water.z);
@@ -390,7 +442,7 @@ bool ModelClass::LoadModel(char* filename)
 
 			if (filename != "square.txt")
 			{
-				if (sqrt(pow(diff.x, 2) + pow(diff.z, 2)) <= 2)
+				if (sqrt(pow(diff.x, 2) + pow(diff.z, 2)) <= 3) //made 3 so the squares diagonally from the water source also turn to alive grass
 				{
 					grass.open("grassUV.txt");
 
@@ -404,7 +456,7 @@ bool ModelClass::LoadModel(char* filename)
 					}
 					grass.close();
 				}
-				else if (sqrt(pow(diff.x, 2) + pow(diff.z, 2)) > 2)
+				else if (sqrt(pow(diff.x, 2) + pow(diff.z, 2)) > 3) 
 				{
 					dead.open("deadUV.txt");
 
@@ -557,3 +609,5 @@ void ModelClass::ReleaseModel()
 
 	return;
 }
+
+

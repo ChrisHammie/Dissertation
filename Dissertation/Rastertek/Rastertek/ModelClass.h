@@ -63,6 +63,8 @@ private:
 	bool LoadModel(char*);
 	void ReleaseModel();
 
+	void SetVerticeAndIndiceArray();
+
 private:
 	ID3D11Buffer *m_vertexBuffer, *m_indexBuffer;
 	int m_vertexCount, m_indexCount;
@@ -81,6 +83,8 @@ private:
 	unsigned long* indices;
 
 	std::vector<XMFLOAT3> midpoints;
+
+	//std::vector<VertexType*> vertices;
 
 	int count;
 
