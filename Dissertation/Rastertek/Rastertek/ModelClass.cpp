@@ -57,13 +57,13 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 	midpoints.reserve(10);
 
 	// Load in the model data,
-	result = LoadModel("square.txt");
+	result = LoadModel("square2.txt");
 	if (!result)
 	{
 		return false;
 	}
 
-	result = LoadModel("flat.txt");
+	result = LoadModel("flat2.txt");
 	if (!result)
 	{
 		return false;
@@ -132,7 +132,7 @@ void ModelClass::SetVerticeAndIndiceArray()
 	ifstream open;
 	char input;
 
-	open.open("square.txt");
+	open.open("square2.txt");
 
 	// If it could not open the file then exit.
 	if (open.fail())
@@ -153,7 +153,7 @@ void ModelClass::SetVerticeAndIndiceArray()
 	open.close();
 	prevVerticeCount = m_vertexCount;
 
-	open.open("flat.txt");
+	open.open("flat2.txt");
 
 	// If it could not open the file then exit.
 	if (open.fail())
@@ -373,22 +373,14 @@ bool ModelClass::LoadModel(char* filename)
 	fin >> m_vertexCount;
 	
 
-	// Set the number of indices to be the same as the vertex count.
-	//m_indexCount = m_vertexCount;
 
 	
-
-	// Create the model using the vertex count that was read in.
 	m_model = new ModelType[m_vertexCount];
 	if (!m_model)
 	{
 		return false;
 	}
 
-
-	
-	/*m_vertexCount += prevVerticeCount;
-	m_indexCount += prevIndiceCount;*/
 
 	// Read up to the beginning of the data.
 	fin.get(input);
@@ -403,26 +395,26 @@ bool ModelClass::LoadModel(char* filename)
 	// Read in the vertex data.
 	for (int i = 0; i< m_vertexCount; i++)
 	{
-		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;
+		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;		//Reads in position and normal values and sets to m_model
 		fin >> m_model[i].nx >> m_model[i].ny >> m_model[i].nz;
 
 		if (iCounter == 1)
 		{
-			one.x = m_model[i].x;
+			one.x = m_model[i].x;								//Stores the second vertex read in of each square1
 			one.y = m_model[i].y;
 			one.z = m_model[i].z;
 
 		}
-		else if (iCounter == 2)
+		else if (iCounter == 2)									
 		{
-			two.x = m_model[i].x;
+			two.x = m_model[i].x;						//Stores the third vertex read in of each square1
 			two.y = m_model[i].y;
 			two.z = m_model[i].z;
 
-			midpoint.x = (one.x + two.x) / 2;
+			midpoint.x = (one.x + two.x) / 2;			//Calculates the mid point of each square1 using the 2 previous values
 			midpoint.y = (one.y + two.y) / 2;
 			midpoint.z = (one.z + two.z) / 2;
-			if (filename == "square.txt")
+			if (filename == "square2.txt")
 			{
 				water = midpoint;
 				prevVerticeCount = 0;
@@ -440,9 +432,9 @@ bool ModelClass::LoadModel(char* filename)
 			diff.z = std::abs(midpoint.z - water.z);
 
 
-			if (filename != "square.txt")
+			if (filename != "square2.txt")			//Depending on distance from the water, depends on the textue that will be displayed
 			{
-				if (sqrt(pow(diff.x, 2) + pow(diff.z, 2)) <= 3) //made 3 so the squares diagonally from the water source also turn to alive grass
+				if (sqrt(pow(diff.x, 2) + pow(diff.z, 2)) <= sqrt(8)) //accounts for the square diagonally from water
 				{
 					grass.open("grassUV.txt");
 
@@ -456,7 +448,7 @@ bool ModelClass::LoadModel(char* filename)
 					}
 					grass.close();
 				}
-				else if (sqrt(pow(diff.x, 2) + pow(diff.z, 2)) > 3) 
+				else if (sqrt(pow(diff.x, 2) + pow(diff.z, 2)) > sqrt(8))
 				{
 					dead.open("deadUV.txt");
 
@@ -527,7 +519,7 @@ bool ModelClass::LoadModel(char* filename)
 	
 	
 
-	/*if (filename == "square.txt")
+	/*if (filename == "square1.txt")
 	{
 		m_indexCount = m_vertexCount;
 		for (int i = 0; i<m_vertexCount; i++)
@@ -564,11 +556,11 @@ bool ModelClass::LoadModel(char* filename)
 
 	
 	
-	m_indexCount = prevVerticeCount + m_vertexCount;
+	//m_indexCount = prevVerticeCount + m_vertexCount;
 	//m_vertexCount += prevVerticeCount;
 	for (int i = prevVerticeCount, j = 0; i<(m_vertexCount + prevVerticeCount); i++, j++)
 	{
-			if (filename == "square.txt")
+			if (filename == "square2.txt")
 			{
 				vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
 				vertices[i].texture = XMFLOAT2(m_model[i].tu, m_model[i].tv);
@@ -576,7 +568,7 @@ bool ModelClass::LoadModel(char* filename)
 
 				
 			}
-			else if (filename == "flat.txt")
+			else if (filename == "flat2.txt")
 			{
 				vertices[i].position = XMFLOAT3(m_model[j].x, m_model[j].y, m_model[j].z);
 				vertices[i].texture = XMFLOAT2(m_model[j].tu, m_model[j].tv);
@@ -595,7 +587,7 @@ bool ModelClass::LoadModel(char* filename)
 		count++;
 	}
 
-	//ReleaseModel();
+	ReleaseModel();
 	return true;
 }
 

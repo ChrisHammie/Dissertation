@@ -138,5 +138,23 @@
     <Text Include="waterUV.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="Flat1.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="flat2.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="flat3.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="square1.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="square2.txt">
+      <Filter>Source Files</Filter>
+    </Text>
+    <Text Include="square3.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

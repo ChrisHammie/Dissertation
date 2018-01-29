@@ -103,11 +103,11 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	
 
-	TwAddVarRW(tweakBar, "Test", TW_TYPE_FLOAT, &test, "");
+	/*TwAddVarRW(tweakBar, "Test", TW_TYPE_FLOAT, &test, "");
 	
 	TwAddVarRW(tweakBar, "CamPos", TW_TYPE_FLOAT, &camPos, "");
 	
-	TwAddVarRW(tweakBar, "Rotation", TW_TYPE_BOOLCPP, &rot, "");
+	TwAddVarRW(tweakBar, "Rotation", TW_TYPE_BOOLCPP, &rot, "");*/
 	
 	// Create the color shader object.
 	//m_TextureShader = new TextureShaderClass;

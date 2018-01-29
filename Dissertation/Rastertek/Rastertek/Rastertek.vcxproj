@@ -199,8 +199,14 @@
     <Text Include="Cube.txt" />
     <Text Include="deadUV.txt" />
     <Text Include="Flat.txt" />
+    <Text Include="Flat1.txt" />
+    <Text Include="flat2.txt" />
+    <Text Include="flat3.txt" />
     <Text Include="grassUV.txt" />
     <Text Include="square.txt" />
+    <Text Include="square1.txt" />
+    <Text Include="square2.txt" />
+    <Text Include="square3.txt" />
     <Text Include="waterUV.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
