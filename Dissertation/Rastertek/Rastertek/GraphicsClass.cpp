@@ -9,7 +9,7 @@ GraphicsClass::GraphicsClass()
 	m_Camera = 0;
 
 	m_Model1 = 0;
-	m_Model2 = 0;
+	//m_Model2 = 0;
 
 	m_TextureShader = 0;
 
@@ -65,11 +65,11 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 
-	m_Model2 = new ModelClass;
+	/*m_Model2 = new ModelClass;
 	if (!m_Model2)
 	{
 		return false;
-	}
+	}*/
 
 	result = m_Model1->Initialize(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), "texturefile.tga","square.txt");
 	if (!result)
@@ -184,12 +184,12 @@ void GraphicsClass::Shutdown()
 		m_Model1 = 0;
 	}
 
-	if (m_Model2)
+	/*if (m_Model2)
 	{
 		m_Model2->Shutdown();
 		delete m_Model2;
 		m_Model2 = 0;
-	}
+	}*/
 
 	// Release the camera object.
 	if (m_Camera)
@@ -296,7 +296,7 @@ bool GraphicsClass::Render(float rotation)
 	//XMMatrixRotationY(rotation);
 	
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	m_Model1->Render(m_Direct3D->GetDeviceContext());
+	m_Model1->Render(m_Direct3D->GetDevice(),m_Direct3D->GetDeviceContext());
 	//m_Model2->Render(m_Direct3D->GetDeviceContext());
 	// Render the model using the color shader.
 	/*result = m_TextureShader->Render(m_Direct3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTexture());

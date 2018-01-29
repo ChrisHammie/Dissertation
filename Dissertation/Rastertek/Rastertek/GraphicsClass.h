@@ -33,6 +33,8 @@ public:
 
 	CameraClass* GetCamera() { return m_Camera; }
 
+	ModelClass* GetModel() { return m_Model1; }
+
 	XMFLOAT3 GetCamPos() { return m_Camera->GetPosition(); }
 	XMFLOAT3 GetCamRot() { return m_Camera->GetRotation(); }
 	//void SetCamPos() {	m_Camera->SetPosition() }
@@ -45,7 +47,7 @@ private:
 	D3DClass* m_Direct3D;
 	CameraClass* m_Camera;
 	ModelClass* m_Model1;
-	ModelClass* m_Model2;
+	//ModelClass* m_Model2;
 	TextureShaderClass* m_TextureShader;
 
 	LightShaderClass* m_LightShader1;

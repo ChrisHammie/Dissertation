@@ -3,6 +3,7 @@
 #include "CameraClass.h"
 #include "GraphicsClass.h"
 
+
 InputClass::InputClass()
 {
 	m_directInput = 0;
@@ -266,6 +267,11 @@ void InputClass::DetectInput(HWND hwnd)
 		//tempGraphics->GetCamera()->SetRotation(tempGraphics->GetCamRot().x + 1.0f, tempGraphics->GetCamRot().y, tempGraphics->GetCamRot().z);
 		tempGraphics->GetCamera()->SetPosition(tempGraphics->GetCamPos().x, tempGraphics->GetCamPos().y - 1.0f, tempGraphics->GetCamPos().z);
 	}
+
+	if (m_keyboardState[DIK_SPACE] & 0x80)
+	{
+		tempModel->SetCube();
+	}
 	
 
 
@@ -297,6 +303,9 @@ void InputClass::SetTempGraphics(GraphicsClass * graphic)
 	tempGraphics = graphic;
 }
 
-
+void InputClass::SetTempModel(ModelClass * model)
+{
+	tempModel = model;
+}
 
 

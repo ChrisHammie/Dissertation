@@ -69,8 +69,17 @@ bool ModelClass::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 		return false;
 	}
 
+	if (cube == true)
+	{
+		result = LoadModel("Cube.txt");
+		if (!result)
+		{
+			return false;
+		}
+	}
+
 	
-	result = InitializeBuffers(device);
+	result = InitializeBuffers(device, deviceContext);
 	if (!result)
 	{
 		return false;
@@ -108,10 +117,10 @@ void ModelClass::Shutdown()
 }
 
 
-void ModelClass::Render(ID3D11DeviceContext* deviceContext)
+void ModelClass::Render(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
 	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	RenderBuffers(deviceContext);
+	RenderBuffers(device, deviceContext);
 
 	return;
 }
@@ -148,10 +157,12 @@ void ModelClass::SetVerticeAndIndiceArray()
 	}
 
 	// Read in the vertex count.
-	open >> m_vertexCount;
+	open >> prevVerticeCount;
 
 	open.close();
-	prevVerticeCount = m_vertexCount;
+
+	m_vertexCount += prevVerticeCount;
+	// prevVerticeCount = m_vertexCount;
 
 	open.open("flat2.txt");
 
@@ -169,11 +180,34 @@ void ModelClass::SetVerticeAndIndiceArray()
 	}
 
 	// Read in the vertex count.
-	open >> m_vertexCount;
+	open >> prevVerticeCount;
+	m_vertexCount += prevVerticeCount;
 
 	open.close();
 
-	m_vertexCount += prevVerticeCount;
+	if (cube == true)
+	{
+		open.open("Cube.txt");
+		if (open.fail())
+		{
+			return;
+		}
+
+		// Read up to the value of vertex count.
+		open.get(input);
+		while (input != ':')
+		{
+			open.get(input);
+		}
+
+		// Read in the vertex count.
+		open >> prevVerticeCount;
+
+		m_vertexCount += prevVerticeCount;
+
+	}
+
+	//m_vertexCount += prevVerticeCount;
 	m_indexCount = m_vertexCount;
 
 	// Create the index array.
@@ -194,7 +228,7 @@ void ModelClass::SetVerticeAndIndiceArray()
 }
 
 
-bool ModelClass::InitializeBuffers(ID3D11Device* device)
+bool ModelClass::InitializeBuffers(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
 	
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
@@ -246,12 +280,14 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 		return false;
 	}
 
+	
+
 	// Release the arrays now that the vertex and index buffers have been created and loaded.
-	delete[] vertices;
+	/*delete[] vertices;
 	vertices = 0;
 
 	delete[] indices;
-	indices = 0;
+	indices = 0;*/
 
 	return true;
 }
@@ -277,11 +313,24 @@ void ModelClass::ShutdownBuffers()
 }
 
 
-void ModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
+void ModelClass::RenderBuffers(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
 	unsigned int stride;
 	unsigned int offset;
 
+	if (cube == true)
+	{
+		m_vertexCount = 0;
+		D3D11_MAPPED_SUBRESOURCE ms;
+		deviceContext->Map(m_vertexBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+		Initialize(device, deviceContext, "texturefile.tga", "");
+
+		memcpy(ms.pData, vertices, sizeof(vertices));
+
+		deviceContext->Unmap(m_vertexBuffer, NULL);
+
+		cube = false;
+	}
 
 	// Set vertex buffer stride and offset.
 	stride = sizeof(VertexType);
@@ -346,6 +395,8 @@ bool ModelClass::LoadModel(char* filename)
 	{
 		return false;
 	}
+
+	
 
 	// Read up to the value of vertex count.
 	fin.get(input);
@@ -469,32 +520,6 @@ bool ModelClass::LoadModel(char* filename)
 		}
 	}
 	prevModel = 0;
-	/*for (int i = 0; i < midpoints.size(); i++)
-	{
-		
-		diff.x = std::abs(midpoints[i].x - water.x);
-		diff.y = std::abs(midpoints[i].y - water.y);
-		diff.z = std::abs(midpoints[i].z - water.z);
-		if (diff.x == 2 || diff.y == 2 || diff.z == 2)
-		{
-			
-			
-		}
-		if (diff.x > 2 || diff.y > 2 || diff.z > 2)
-		{
-			uv.open("deadUV.txt");
-			if (uv.fail())
-			{
-				return false;
-			}
-
-			for (int j = 0; j < m_vertexCount; j++)
-			{
-				uv >> m_model[j].tu >> m_model[j].tv;
-			}
-		}
-		
-	}*/
 
 
 	// Close the model file.
@@ -543,7 +568,7 @@ bool ModelClass::LoadModel(char* filename)
 	
 	//m_indexCount = prevVerticeCount + m_vertexCount;
 	//m_vertexCount += prevVerticeCount;
-	for (int i = prevVerticeCount, j = 0; i<(m_vertexCount + prevVerticeCount); i++, j++)
+	for (int i = prevVerticeCount, j = 0, k = 0; i<(m_vertexCount + prevVerticeCount); i++, j++, k++)
 	{
 			if (filename == "square2.txt")
 			{
@@ -558,19 +583,32 @@ bool ModelClass::LoadModel(char* filename)
 				vertices[i].position = XMFLOAT3(m_model[j].x, m_model[j].y, m_model[j].z);
 				vertices[i].texture = XMFLOAT2(m_model[j].tu, m_model[j].tv);
 				vertices[i].normal = XMFLOAT3(m_model[j].nx, m_model[j].ny, m_model[j].nz);
-				
 			}
-
+			else if (filename == "Cube.txt")
+			{
+				vertices[i].position = XMFLOAT3(m_model[k].x, m_model[k].y, m_model[k].z);
+				vertices[i].texture = XMFLOAT2(m_model[k].tu, m_model[k].tv);
+				vertices[i].normal = XMFLOAT3(m_model[k].nx, m_model[k].ny, m_model[k].nz);
+			}
 			indices[i] = i;
 
 	}
 
-	if (count == 0)
+	prevVerticeCount += m_vertexCount;
+	prevIndiceCount += m_indexCount;
+
+	/*if (count == 0)
 	{
 		prevVerticeCount = m_vertexCount;
 		prevIndiceCount = m_indexCount;
 		count++;
 	}
+	else if (count == 1)
+	{
+		prevVerticeCount = m_vertexCount;
+		prevIndiceCount = m_indexCount;
+	}*/
+
 
 	ReleaseModel();
 	return true;

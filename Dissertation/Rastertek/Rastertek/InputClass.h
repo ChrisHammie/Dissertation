@@ -11,6 +11,7 @@
 
 class GraphicsClass;
 class CameraClass;
+class ModelClass;
 class InputClass
 {
 public:
@@ -26,6 +27,8 @@ public:
 	void GetMouseLocation(int&, int&);
 
 	void SetTempGraphics(GraphicsClass*);
+
+	void SetTempModel(ModelClass*);
 
 private:
 
@@ -47,6 +50,8 @@ private:
 	int m_mouseX, m_mouseY;
 	CameraClass* m_Camera;
 	GraphicsClass* tempGraphics;
+
+	ModelClass* tempModel;
 };
 
 #endif

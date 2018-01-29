@@ -57,6 +57,7 @@ bool SystemClass::Initialize()
 	}
 
 	m_Input->SetTempGraphics(m_Graphics);
+	
 
 	// Initialize the graphics object.
 	result = m_Graphics->Initialize(screenWidth, screenHeight, m_hwnd);
@@ -64,6 +65,7 @@ bool SystemClass::Initialize()
 	{
 		return false;
 	}
+	m_Input->SetTempModel(m_Graphics->GetModel());
 
 	return true;
 }

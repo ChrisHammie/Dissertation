@@ -40,22 +40,24 @@ public:
 
 	bool Initialize(ID3D11Device*, ID3D11DeviceContext*, char*, char*);
 	void Shutdown();
-	void Render(ID3D11DeviceContext*);
+	void Render(ID3D11Device* device, ID3D11DeviceContext*);
 
 	int GetIndexCount();
 	
 	std::vector<ID3D11ShaderResourceView*> GetTexture();
 
 	
-
+	void AddVertexCount(int vertex) { m_vertexCount += vertex; }
+	int GetVertexCount() { return m_vertexCount; }
 	//float length = 0.0f;
+	void SetCube() { cube = true; }
 
 	
 
 private:
-	bool InitializeBuffers(ID3D11Device*);
+	bool InitializeBuffers(ID3D11Device*, ID3D11DeviceContext* );
 	void ShutdownBuffers();
-	void RenderBuffers(ID3D11DeviceContext*);
+	void RenderBuffers(ID3D11Device*, ID3D11DeviceContext*);
 	
 	bool LoadTexture(ID3D11Device*, ID3D11DeviceContext*, char*);
 	void ReleaseTexture();
@@ -81,6 +83,8 @@ private:
 
 	VertexType* vertices;
 	unsigned long* indices;
+
+	bool cube;
 
 	std::vector<XMFLOAT3> midpoints;
 
