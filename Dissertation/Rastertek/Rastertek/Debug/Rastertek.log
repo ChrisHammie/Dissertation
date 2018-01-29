@@ -1,1 +1,3 @@
-﻿  Rastertek.vcxproj -> E:\Dissertation\Dissertation\Dissertation\Rastertek\Debug\Rastertek.exe
+﻿  ModelClass.cpp
+e:\dissertation\dissertation\dissertation\rastertek\rastertek\modelclass.cpp(354): warning C4101: 'uvCoord': unreferenced local variable
+  Rastertek.vcxproj -> E:\Dissertation\Dissertation\Dissertation\Rastertek\Debug\Rastertek.exe
